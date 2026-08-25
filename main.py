@@ -4,7 +4,7 @@ sums: list[float] = [45.87, 67.88, 67.96, 67.02, 128.89, 200.74, 140.25, 69.69, 
 # sum of some addends the program solves for
 partial_sum: float = 421.24
 # number of categories used for addend comparison
-CATEGORY_RES: int = 5
+MAX_RES: int = 10
 
 
 # calculate total sum
@@ -26,19 +26,24 @@ for i in sums:
 
 # split sums into different category sizes
 rest: list[float] = []
+cat_upper_limit: float = partial_sum
+cat_counter: int = 0
 
-for i in range(CATEGORY_RES):
-    cat_limit: float = partial_sum / (CATEGORY_RES - i)
+while sums != []:
+    cat_lower_limit = cat_upper_limit / 2
     categorised_sums.append([])
+    print(f"------- CATEGORY_{cat_counter}: <= {cat_upper_limit} && > {cat_lower_limit}")
     for j in sums:
-        if j <= cat_limit:
+        if j <= cat_upper_limit and j > cat_lower_limit:
             print(j)
-            categorised_sums[i].append(j)
+            categorised_sums[cat_counter].append(j)
         else:
             rest.append(j)
     sums = rest
-    print(f"------- CAT_LIMIT_{CATEGORY_RES - i}: {cat_limit}")
     rest = []
+    cat_upper_limit = cat_upper_limit / 2
+    cat_counter = cat_counter + 1
+categorised_sums.pop(0)
     
 
 
