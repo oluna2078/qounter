@@ -1,3 +1,5 @@
+from src import gui
+
 # --INPUT--
 # list of addends
 sums: list[float] = [45.87, 67.88, 67.96, 67.02, 128.89, 200.74, 140.25, 69.69, 100.37, 40.7, 500.59, 30.45, 45.89]
@@ -17,33 +19,33 @@ MAX_RES: int = 10
 categorised_sums: list[list[float]] = []
 
 
-# remove all bigger than partial_sum
-for i in sums:
-    if i > partial_sum:
-        sums.remove(i)
-    elif i == partial_sum:
-        print(i)
-
-# split sums into different category sizes
-rest: list[float] = []
-cat_upper_limit: float = partial_sum
-cat_counter: int = 0
-
-while sums != []:
-    cat_lower_limit = cat_upper_limit / 2
-    categorised_sums.append([])
-    print(f"------- CATEGORY_{cat_counter}: <= {cat_upper_limit} && > {cat_lower_limit}")
-    for j in sums:
-        if j <= cat_upper_limit and j > cat_lower_limit:
-            print(j)
-            categorised_sums[cat_counter].append(j)
-        else:
-            rest.append(j)
-    sums = rest
-    rest = []
-    cat_upper_limit = cat_upper_limit / 2
-    cat_counter = cat_counter + 1
-categorised_sums.pop(0)
+## remove all bigger than partial_sum
+#for i in sums:
+#    if i > partial_sum:
+#        sums.remove(i)
+#    elif i == partial_sum:
+#        print(i)
+#
+## split sums into different category sizes
+#rest: list[float] = []
+#cat_upper_limit: float = partial_sum
+#cat_counter: int = 0
+#
+#while sums != []:
+#    cat_lower_limit = cat_upper_limit / 2
+#    categorised_sums.append([])
+#    print(f"------- CATEGORY_{cat_counter}: <= {cat_upper_limit} && > {cat_lower_limit}")
+#    for j in sums:
+#        if j <= cat_upper_limit and j > cat_lower_limit:
+#            print(j)
+#            categorised_sums[cat_counter].append(j)
+#        else:
+#            rest.append(j)
+#    sums = rest
+#    rest = []
+#    cat_upper_limit = cat_upper_limit / 2
+#    cat_counter = cat_counter + 1
+#categorised_sums.pop(0)
     
 
 
