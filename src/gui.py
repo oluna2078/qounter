@@ -1,22 +1,25 @@
 import tkinter as tk
 from tkinter import ttk
-import time
+import random
 from src import brute_force as bf
 
 sums: list[float] = [45.37, 28, 47, 35.4, 73.59, 35.56, 9.7, 38, 5, 4.67, 2.1, 11.87, 40.33, 111, 4036, 50.55, 6, 7, 3, 2, 300, 27.59]
 
 
 def search():
+    calmness_val: int = random.randint(21, 29)
     progress.start()
     button_print.config(text="hacker mode activated...")
-    progress_label.config(text=f"0%")
-    progress['value'] = 1
+    progress['value'] = calmness_val / 3
+    progress_label.config(text=f"{round(calmness_val / 3)}%")
     root.update_idletasks()
 
     for i in range(len(sums)):
         bf.rec_sum_search(sums, 100, i)
-        progress['value'] = 100 / (len(sums) - i)
+        progress['value'] = 100 / (len(sums) - i) + calmness_val
         progress_made = round(progress['value'])
+        if progress_made > 100:
+            progress_made = 100
         progress_label.config(text=f"{progress_made}%")
         root.update_idletasks()
     print("FINISHED")
