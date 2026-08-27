@@ -1,4 +1,4 @@
-from src import gui
+#from src import gui
 
 # --INPUT--
 # list of addends
@@ -19,33 +19,60 @@ MAX_RES: int = 10
 categorised_sums: list[list[float]] = []
 
 
-## remove all bigger than partial_sum
-#for i in sums:
-#    if i > partial_sum:
-#        sums.remove(i)
-#    elif i == partial_sum:
-#        print(i)
-#
-## split sums into different category sizes
-#rest: list[float] = []
-#cat_upper_limit: float = partial_sum
-#cat_counter: int = 0
-#
-#while sums != []:
-#    cat_lower_limit = cat_upper_limit / 2
-#    categorised_sums.append([])
-#    print(f"------- CATEGORY_{cat_counter}: <= {cat_upper_limit} && > {cat_lower_limit}")
-#    for j in sums:
-#        if j <= cat_upper_limit and j > cat_lower_limit:
-#            print(j)
-#            categorised_sums[cat_counter].append(j)
-#        else:
-#            rest.append(j)
-#    sums = rest
-#    rest = []
-#    cat_upper_limit = cat_upper_limit / 2
-#    cat_counter = cat_counter + 1
-#categorised_sums.pop(0)
+# remove all bigger than partial_sum
+for i in sums:
+    if i > partial_sum:
+        sums.remove(i)
+    elif i == partial_sum:
+        print(i)
+
+
+
+# split sums into category sizes that half every step
+rest: list[float] = []
+cat_upper_limit: float = partial_sum
+cat_counter: int = 0
+
+sums_temp: list[float] = sums.copy()
+
+while sums_temp != []:
+    cat_lower_limit = cat_upper_limit / 2
+    categorised_sums.append([])
+    print(f"------- CATEGORY_{cat_counter}: <= {cat_upper_limit} && > {cat_lower_limit}")
+    for j in sums_temp:
+        if j <= cat_upper_limit and j > cat_lower_limit:
+            print(j)
+            categorised_sums[cat_counter].append(j)
+        else:
+            rest.append(j)
+    sums_temp = rest
+    rest = []
+    cat_upper_limit = cat_upper_limit / 2
+    cat_counter = cat_counter + 1
+categorised_sums.pop(0)
+
+
+
+print("\n\n\n\n\n\n\n\n\n\n\n")
+
+
+# split sums into different equally split category sizes
+rest: list[float] = []
+categorised_sums = []
+CATEGORY_RES: int = 5
+
+for i in range(CATEGORY_RES):
+    cat_limit: float = partial_sum / (CATEGORY_RES - i)
+    categorised_sums.append([])
+    for j in sums:
+        if j <= cat_limit:
+            print(j)
+            categorised_sums[i].append(j)
+        else:
+            rest.append(j)
+    sums = rest
+    print(f"------- CATEGORY_{CATEGORY_RES - i}: <= {cat_limit}")
+    rest = []
     
 
 
