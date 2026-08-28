@@ -1,38 +1,56 @@
+
+# remove all bigger than key
+def list_clean(list: list[float], key: float):
+    list_out = list.copy()
+    for i in list:
+        if i > key:
+            list_out.remove(i)
+
+    return list_out
+
 # split sums into different equally split category sizes
 def categorise(list: list[float], key: float):
-    cat_list: list[list[float]] = []
-    rest: list[float] = []
-    # The smallest category must be empty so the number of categories
-    # must always be exactly the partial sum divided by the smallest element or higher
-    cat_res: int = round((key / min(list)) + 0.5)
-    print(cat_res)
+    label_list: list[int] = []
+
+    #cat_res: int = round((key / min(list)) + 0.5)
+    cat_res: int = int(len(list) / 3) * 2
+
+    for i in range(len(list)):
+        label_list.append(cat_res)
 
     for i in range(cat_res):
-        cat_limit: float = key / cat_res * (i+1)
-        cat_list.append([])
-        for j in list:
-            if j <= cat_limit:
-                print(j)
-                cat_list[i].append(j)
-            else:
-                rest.append(j)
-        list = rest
-        print(f"------- CATEGORY_{i+1}: <= {cat_limit}")
-        rest = []
+        cat_limit: float = key / cat_res * (cat_res - i)
 
-    return cat_list
+        for j in range(len(list)):
+            if list[j] <= cat_limit:
+                label_list[j] = cat_res - i -1
+                #print(list[j])
+
+        #print(f"------- CATEGORY {cat_res - i - 1} | {cat_res - i}: <= {cat_limit}")
+
+    return [cat_res, label_list]
 
 
 
 def rec_sum_search_helper(
     rec_depth: int,
     list: list[float],
+    label_list: list[int], # category of [index] element in list
     key: float,
+    categories: int,   # number of categories
     past_sum: float,   # accumulator: all addends summed up before next recursion
-    visual: str        # accumulator: same as above but for visual output
+    visual: str,       # accumulator: same as above but for visual output
+    cat_sum_ceil: int, # acc: check for too big sums
+    cat_sum_floor: int # acc: check for too little sums
 ):
     # base case: final recursion layer, searches for matching sums
     if rec_depth <= 0:
+        cat_sum_floor = cat_sum_floor + max(label_list) + 1
+        # special case: sum too small
+        if cat_sum_floor < categories:
+            #print(f"PASS: Too small {cat_sum_floor}")
+            return
+
         for i in list:
             test_sum = round(past_sum + i, 2)
             #print(f"{visual}{i} = {test_sum}")
@@ -41,11 +59,22 @@ def rec_sum_search_helper(
 
     # recursive case: spawns another search function for next addend
     else:
+        # special case: sum too big
+        if cat_sum_ceil >= categories:
+            #print(f"PASS: Too big {cat_sum_ceil}")
+            return
+
         list_cut = list.copy()
-        for i in list:
+        lbl_list_cut = label_list.copy()
+        for i in range(len(list) - 1):
             past_sum_new = round(past_sum + list_cut.pop(0), 2)
-            visual_new = f"{visual}{i} + "
-            rec_sum_search_helper(rec_depth - 1, list_cut, key, past_sum_new, visual_new)
+            visual_new = f"{visual}{list[i]} + "
+
+            current_cat = lbl_list_cut.pop(0)
+            cat_sum_ceil_new = cat_sum_ceil + current_cat
+            cat_sum_floor_new = cat_sum_floor + current_cat + 1
+
+            rec_sum_search_helper(rec_depth - 1, list_cut, lbl_list_cut, key, categories, past_sum_new, visual_new, cat_sum_ceil_new, cat_sum_floor_new)
 
 
 
@@ -58,16 +87,14 @@ def rec_sum_search(
     if not rec_depth:
         rec_depth = len(list)
 
-    # remove all bigger than key
-    new_list = list.copy()
-    for i in list:
-        if i > key:
-            new_list.remove(i)
-    list = new_list.copy()
+    list = list_clean(list, key)
+    get_cat_data: list = categorise(list, key)
+    categories = get_cat_data[0]
+    list_lbl = get_cat_data[1]
 
     # recursively search through rec_depth number of addends
     for layer in range(rec_depth + 1):
-        rec_sum_search_helper(layer, list, key, 0, "")
+        rec_sum_search_helper(layer, list, list_lbl, key, categories, 0, "", 0, 0)
 
 
 
@@ -75,20 +102,11 @@ def rec_sum_search(
 
 # list of addends
 sums: list[float] = [
-        45.87, 67.88, 67.96, 67.02, 128.89, 200.74, 140.25, 69.69, 100.37, 40.7, 500.59, 30.45, 45.89,
-        45.87, 67.88, 67.96, 67.02, 128.89, 200.74, 140.25, 69.69, 100.37, 40.7, 500.59, 30.45, 45.89]
+        45.87, 67.88, 67.96, 67.02, 128.89, 200.74, 140.25, 69.69, 100.37, 40.7, 500.59, 30.45, 45.89, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+partial_sum = 421.24
 
 
-
-catcat = categorise(list=sums, key=421.24)
-
-for i in range(len(catcat)):
-    print(catcat[i])
-    print(i)
-
-
-
-#print("\n\n\n\n\n\n\n\n")
-#rec_sum_search(list=sums, key=421.24)
+rec_sum_search(list=sums, key=partial_sum)
 
 
