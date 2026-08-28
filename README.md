@@ -88,3 +88,50 @@ This has some really useful observations:
 Now all elements of a given category have the property that you'll need to sum at least `i` elements of that category to equal `p`. Similarly you will always sum to something `> p` if you add `i + 1` elements of a given category. **Notice how this doesn't work for category 5, the smallest category.**
 
 
+
+
+
+
+
+
+
+
+14 Categories: (1st is empty)
+
+
+0
+    - NOTHING
+1. <= 30.08857142857143
+    - 14x not possible
+    - highest 13x2 = 26 alt: 13x1 = 13
+    - lowest   7x2 = 14 alt:  7x1 = 7
+2. <= 60.17714285714286
+    - 7x not possible
+    - highest  6x3 = 18 alt:  6x2 = 12
+    - lowest   5x3 = 15 alt:  5x2 = 10
+3. <= 90.2657142857143
+    - 5x not possible
+    - highest  4x4 = 16 alt:  4x3 = 12
+    - lowest   4x4 = 16 alt:  4x3 = 12
+4. <= 120.35428571428572
+    - 4x not possible
+    - highest  3x5 = 15 alt:  3x4 = 12
+    - lowest   3x5 = 15 alt:  3x4 = 12
+5. <= 150.44285714285715
+    - nothing possible  
+6. <= 180.5314285714286
+    - 1x not possible
+    - highest  2x7 = 14 alt:  2x6 = 12
+    - lowest   2x7 = 14 alt:  2x6 = 12
+7. <= 210.62
+8. <= 240.70857142857145
+9. <= 270.7971428571429
+10. <= 300.8857142857143
+11. <= 330.9742857142857
+12. <= 361.0628571428572
+13. <= 391.1514285714286
+14. <= 421.24
+
+
+Everything below `cat_num + cat_num ... = 14` is not relevant. CAT+1
+Everything above or equal `cat_num + cat_num ... = 14` is not relevant. CAT (alt)
