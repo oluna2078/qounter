@@ -13,7 +13,7 @@ class App:
 
         self.filepath: str = ""
 
-        root.geometry('700x500')
+        root.geometry('1000x500')
 
         root.rowconfigure(0, weight=1)
         root.rowconfigure(1, weight=3)
@@ -26,7 +26,7 @@ class App:
         root.columnconfigure(1, weight=3)
         root.columnconfigure(2, weight=3)
         root.columnconfigure(3, weight=3)
-        root.columnconfigure(4, weight=1)
+        root.columnconfigure(4, weight=2)
 
         label = tk.Label(
                 root,
@@ -40,70 +40,78 @@ class App:
                 width=25, 
                 height=3, 
                 command=root.destroy
-        ).grid(row=5, column=0, columnspan=5, sticky='EW')
+        ).grid(row=5, column=0, columnspan=6, sticky='EW')
 
 
         button_open_file = tk.Button(
                 root, 
                 text="open file", 
+                width=15,
                 height=2, 
                 command=self.upload_file
-        ).grid(row=1, column=0, sticky='EW')
+        ).grid(row=1, column=0)
 
 
         self.file_label = tk.Label(
                 root,
                 text="No file selected"
         )
-        self.file_label.grid(row=1, column=1, columnspan=4, sticky='EW')
+        self.file_label.grid(row=1, column=1, columnspan=2, sticky='EW')
 
 
-        self.button_print = tk.Button(
+        self.key_entry = tk.Entry(
+                root,
+                width=10,
+        )
+        self.key_entry.grid(row=1, column=3, sticky='E')
+
+
+        self.button_run = tk.Button(
                 root, 
-                text="hack the mainframe", 
-                width=20, 
+                text="calculate", 
+                width=15, 
                 height=2, 
                 command=self.search
         )
-        self.button_print.grid(row=3, column=0, columnspan=5)
+        self.button_run.grid(row=2, column=0)
 
 
         self.progress = ttk.Progressbar(
                 root, 
                 orient='horizontal', 
-                length=500, 
                 mode='determinate'
         )
-        self.progress.grid(row=2, column=0, columnspan=4, sticky='EW')
+        self.progress.grid(row=2, column=1, columnspan=3, sticky='EW')
 
 
         self.progress_label = tk.Label(
                 root, 
-                text=""
+                text="",
         )
-        self.progress_label.grid(row=2, column=5)
+        self.progress_label.grid(row=2, column=5, sticky='W')
 
     def search(self):
         sums: list[float] = csv_handler.csv_to_lst(self.filepath)
+        key: float = float(self.key_entry.get())
 
         calmness_val: int = random.randint(21, 29)
         self.progress.start()
-        self.button_print.config(text="hacker mode activated...")
+        self.button_run.config(text="calculating...")
         self.progress['value'] = calmness_val / 3
         self.progress_label.config(text=f"{round(calmness_val / 3)}%")
         root.update_idletasks()
 
         for i in range(len(sums)):
-            cf.rec_sum_search(sums, 421.24, i)
+            cf.rec_sum_search(sums, key, i)
             self.progress['value'] = 100 / (len(sums) - i) + calmness_val
             progress_made = round(self.progress['value'])
             if progress_made > 100:
                 progress_made = 100
             self.progress_label.config(text=f"{progress_made}%")
             root.update_idletasks()
-        print("FINISHED")
+        print("FINISHED\n")
 
-        self.button_print.config(text="hack the mainframe")
+        self.button_run.config(text="calculate")
         self.progress_label.config(text="")
         root.update_idletasks()
         self.progress.stop()
