@@ -1,3 +1,4 @@
+
 def rec_sum_search_helper(
     rec_depth: int,
     list: list[float],
@@ -16,9 +17,9 @@ def rec_sum_search_helper(
     # recursive case: spawns another search function for next addend
     else:
         list_cut = list.copy()
-        for i in list:
+        for i in range(len(list) - 1):
             past_sum_new = round(past_sum + list_cut.pop(0), 2)
-            visual_new = f"{visual}{i} + "
+            visual_new = f"{visual}{list[i]} + "
             rec_sum_search_helper(rec_depth - 1, list_cut, key, past_sum_new, visual_new)
 
 
@@ -29,9 +30,6 @@ def rec_sum_search(
     rec_depth: int|None = None # max number of addends the solution can be made of
                                # default: length of list
 ):
-    if not rec_depth:
-        rec_depth = len(list)
-
     # remove all bigger than key
     new_list = list.copy()
     for i in list:
@@ -39,15 +37,33 @@ def rec_sum_search(
             new_list.remove(i)
     list = new_list.copy()
 
-    # recursively search through rec_depth number of addends
-    for layer in range(rec_depth + 1):
-        rec_sum_search_helper(layer, list, key, 0, "")
+    if not rec_depth:
+        rec_depth = len(list)
+
+        # recursively search through rec_depth number of addends
+        for layer in range(rec_depth + 1):
+            rec_sum_search_helper(
+                    rec_depth=layer,
+                    list=list,
+                    key=key, 
+                    past_sum=0,
+                    visual=""
+            )
+    else:
+        rec_sum_search_helper(
+                rec_depth=rec_depth,
+                list=list,
+                key=key, 
+                past_sum=0,
+                visual=""
+        )
+        
 
 
 
 
 ## list of addends
-sums: list[float] = [
-        45.87, 67.88, 67.96, 67.02, 128.89, 200.74, 140.25, 69.69, 100.37, 40.7, 500.59, 30.45, 45.89, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-
-rec_sum_search(list=sums, key=421.24)
+#sums: list[float] = [
+#        45.87, 67.88, 67.96, 67.02, 128.89, 200.74, 140.25, 69.69, 100.37, 40.7, 500.59, 30.45, 45.89, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+#
+#rec_sum_search(list=sums, key=421.24)

@@ -84,29 +84,45 @@ def rec_sum_search(
     rec_depth: int|None = None # max number of addends the solution can be made of
                                # default: length of list
 ):
-    if not rec_depth:
-        rec_depth = len(list)
-
     list = list_clean(list, key)
     get_cat_data: list = categorise(list, key)
     categories = get_cat_data[0]
     list_lbl = get_cat_data[1]
 
-    # recursively search through rec_depth number of addends
-    for layer in range(rec_depth + 1):
-        rec_sum_search_helper(layer, list, list_lbl, key, categories, 0, "", 0, 0)
+    if rec_depth is None:
+        rec_depth = len(list)
 
+        # recursively search through rec_depth number of addends
+        for layer in range(rec_depth + 1):
+            rec_sum_search_helper(
+                    rec_depth=layer,
+                    list=list,
+                    label_list=list_lbl, 
+                    key=key, 
+                    categories=categories,
+                    past_sum=0,
+                    visual="",
+                    cat_sum_ceil=0,
+                    cat_sum_floor=0
+            )
+    else:
+        rec_sum_search_helper(
+                rec_depth=rec_depth,
+                list=list,
+                label_list=list_lbl, 
+                key=key, 
+                categories=categories,
+                past_sum=0,
+                visual="",
+                cat_sum_ceil=0,
+                cat_sum_floor=0
+        )
 
 
 
 
 # list of addends
-sums: list[float] = [
-        45.87, 67.88, 67.96, 67.02, 128.89, 200.74, 140.25, 69.69, 100.37, 40.7, 500.59, 30.45, 45.89, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-
-partial_sum = 421.24
-
-
-rec_sum_search(list=sums, key=partial_sum)
-
-
+#sums: list[float] = [
+#        45.87, 67.88, 67.96, 67.02, 128.89, 200.74, 140.25, 69.69, 100.37, 40.7, 500.59, 30.45, 45.89, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+#
+#rec_sum_search(list=sums, key=421.24, rec_depth=0)
