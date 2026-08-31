@@ -1,6 +1,39 @@
 # qounter
 A tool to search for all possible components of a given list of numbers to add to a specific partial sum.
 
+## How to use
+### Installation
+Download the code (and extract the .zip if necessary). You will find two python files, `qounter.py` and `quonter-gui.py`, a CLI and a GUI application. To run these programs you will need a version of **python 3.14** which you can either install via a package manager on Linux or [with an installer](https://www.python.org/downloads/windows/) for Windows. On Linux you might have to install the **tkinter python package** for *python 3.14*, on Windows it should be included in the installer.
+
+### How to use the GUI
+Opening the GUI you will see 4 main options:
+- "open file" will open a file explorer in which you can choose a **.csv table** to use as an input list
+- "sum" is the sum which you are searching the addends for
+- "margin" allows to show solutions that are slightly off sum (this is optional)
+- "calculate" will start the calculation of possible addends that add to sum (+/- margin)
+
+![Window example with more explanation][tut-win]
+> It might take a while if there are a lot of possible solutions.
+> You can see all solutions listed out in the console. The addends will be in the same order as they were in the input list.
+
+When exporting the .csv put the addends in the first column with either an empty cell or a cell with anything other than a number at the end:
+
+![Table example to show what will be read][tut-tbl]
+
+### How to use the CLI
+**usage**: `qounter.py [-h] [-f path] [-s float] [-m float]`
+**options**:
+```
+  -h, --help          show this help message and exit
+  -f, --file path     path to CSV input data
+  -s, --sum float     partial sum that needs to be calculated using the
+                      elements from the input data
+  -m, --margin float  +/- margin the sum can be off by (optional)
+```
+
+
+
+
 
 ## Thought process
 
@@ -88,50 +121,5 @@ This has some really useful observations:
 Now all elements of a given category have the property that you'll need to sum at least `i` elements of that category to equal `p`. Similarly you will always sum to something `> p` if you add `i + 1` elements of a given category. **Notice how this doesn't work for category 5, the smallest category.**
 
 
-
-
-
-
-
-
-
-
-14 Categories: (1st is empty)
-
-
-0
-    - NOTHING
-1. <= 30.08857142857143
-    - 14x not possible
-    - highest 13x2 = 26 alt: 13x1 = 13
-    - lowest   7x2 = 14 alt:  7x1 = 7
-2. <= 60.17714285714286
-    - 7x not possible
-    - highest  6x3 = 18 alt:  6x2 = 12
-    - lowest   5x3 = 15 alt:  5x2 = 10
-3. <= 90.2657142857143
-    - 5x not possible
-    - highest  4x4 = 16 alt:  4x3 = 12
-    - lowest   4x4 = 16 alt:  4x3 = 12
-4. <= 120.35428571428572
-    - 4x not possible
-    - highest  3x5 = 15 alt:  3x4 = 12
-    - lowest   3x5 = 15 alt:  3x4 = 12
-5. <= 150.44285714285715
-    - nothing possible  
-6. <= 180.5314285714286
-    - 1x not possible
-    - highest  2x7 = 14 alt:  2x6 = 12
-    - lowest   2x7 = 14 alt:  2x6 = 12
-7. <= 210.62
-8. <= 240.70857142857145
-9. <= 270.7971428571429
-10. <= 300.8857142857143
-11. <= 330.9742857142857
-12. <= 361.0628571428572
-13. <= 391.1514285714286
-14. <= 421.24
-
-
-Everything below `cat_num + cat_num ... = 14` is not relevant. CAT+1
-Everything above or equal `cat_num + cat_num ... = 14` is not relevant. CAT (alt)
+[tut-tbl]: ./res/tutorial-table.png
+[tut-win]: ./res/tutorial-window.png
