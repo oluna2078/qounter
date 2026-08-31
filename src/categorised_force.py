@@ -35,13 +35,14 @@ def categorise(list: list[float], key: float):
 def rec_sum_search_helper(
     rec_depth: int,
     list: list[float],
-    label_list: list[int], # category of [index] element in list
+    label_list: list[int],  # category of [index] element in list
     key: float,
-    categories: int,   # number of categories
-    past_sum: float,   # accumulator: all addends summed up before next recursion
-    visual: str,       # accumulator: same as above but for visual output
-    cat_sum_ceil: int, # acc: check for too big sums
-    cat_sum_floor: int # acc: check for too little sums
+    categories: int,        # number of categories
+    past_sum: float,        # accumulator: all addends summed up before next recursion
+    visual: str,            # accumulator: same as above but for visual output
+    cat_sum_ceil: int,      # acc: check for too big sums
+    cat_sum_floor: int,     # acc: check for too little sums
+    margin: float
 ):
     # base case: final recursion layer, searches for matching sums
     if rec_depth <= 0:
@@ -54,7 +55,7 @@ def rec_sum_search_helper(
         for i in list:
             test_sum = round(past_sum + i, 2)
             #print(f"{visual}{i} = {test_sum}")
-            if test_sum == key:
+            if test_sum >= (key - margin) and test_sum <= (key + margin):
                 print(f"FOUND SOLUTION: {visual}{i} = {test_sum}")
 
     # recursive case: spawns another search function for next addend
@@ -74,15 +75,16 @@ def rec_sum_search_helper(
             cat_sum_ceil_new = cat_sum_ceil + current_cat
             cat_sum_floor_new = cat_sum_floor + current_cat + 1
 
-            rec_sum_search_helper(rec_depth - 1, list_cut, lbl_list_cut, key, categories, past_sum_new, visual_new, cat_sum_ceil_new, cat_sum_floor_new)
+            rec_sum_search_helper(rec_depth - 1, list_cut, lbl_list_cut, key, categories, past_sum_new, visual_new, cat_sum_ceil_new, cat_sum_floor_new, margin)
 
 
 
 def rec_sum_search(
-    list: list[float],         # list of possible addends
-    key: float,                # sum of some addends the program solves for
-    rec_depth: int|None = None # max number of addends the solution can be made of
-                               # default: length of list
+    list: list[float],          # list of possible addends
+    key: float,                 # sum of some addends the program solves for
+    rec_depth: int|None = None, # max number of addends the solution can be made of
+                                # default: length of list
+    margin: float = 0           # sums of key +/- margin are also solutions
 ):
     list = list_clean(list, key)
     get_cat_data: list = categorise(list, key)
@@ -103,7 +105,8 @@ def rec_sum_search(
                     past_sum=0,
                     visual="",
                     cat_sum_ceil=0,
-                    cat_sum_floor=0
+                    cat_sum_floor=0,
+                    margin=margin
             )
     else:
         rec_sum_search_helper(
@@ -115,7 +118,8 @@ def rec_sum_search(
                 past_sum=0,
                 visual="",
                 cat_sum_ceil=0,
-                cat_sum_floor=0
+                cat_sum_floor=0,
+                margin=margin
         )
 
 
