@@ -63,12 +63,20 @@ class App:
         self.file_label.grid(row=1, column=1, columnspan=2, sticky='EW')
 
 
-        # ENTRY sum_to_calc
+        # ENTRY sum to calculate
         self.key_entry = tk.Entry(
                 root,
                 width=10,
         )
         self.key_entry.grid(row=1, column=3, sticky='E')
+
+
+        # ENTRY +/- margin (optional)
+        self.margin_entry = tk.Entry(
+                root,
+                width=10,
+        )
+        self.margin_entry.grid(row=1, column=4, sticky='E')
 
 
         # BUTTON run_calc
@@ -102,6 +110,12 @@ class App:
     def search(self):
         sums: list[float] = csv_handler.csv_to_lst(self.filepath)
         key: float = float(self.key_entry.get())
+        margin: float
+
+        if self.margin_entry.get() == '':
+            margin = 0
+        else:
+            margin = float(self.margin_entry.get())
 
         calmness_val: int = random.randint(21, 29)
         self.progress.start()
@@ -111,7 +125,7 @@ class App:
         self.root.update_idletasks()
 
         for i in range(len(sums)):
-            cf.rec_sum_search(sums, key, i)
+            cf.rec_sum_search(sums, key, i, margin)
             self.progress['value'] = 100 / (len(sums) - i) + calmness_val
             progress_made = round(self.progress['value'])
             if progress_made > 100:

@@ -3,15 +3,16 @@ def rec_sum_search_helper(
     rec_depth: int,
     list: list[float],
     key: float,
-    past_sum: float,   # accumulator: all addends summed up before next recursion
-    visual: str        # accumulator: same as above but for visual output
+    past_sum: float,    # accumulator: all addends summed up before next recursion
+    visual: str,        # accumulator: same as above but for visual output
+    margin: float
 ):
     # base case: final recursion layer, searches for matching sums
     if rec_depth <= 0:
         for i in list:
             test_sum = round(past_sum + i, 2)
             #print(f"{visual}{i} = {test_sum}")
-            if test_sum == key:
+            if test_sum >= (key - margin) and test_sum <= (key + margin):
                 print(f"FOUND SOLUTION: {visual}{i} = {test_sum}")
 
     # recursive case: spawns another search function for next addend
@@ -20,15 +21,22 @@ def rec_sum_search_helper(
         for i in range(len(list) - 1):
             past_sum_new = round(past_sum + list_cut.pop(0), 2)
             visual_new = f"{visual}{list[i]} + "
-            rec_sum_search_helper(rec_depth - 1, list_cut, key, past_sum_new, visual_new)
+            rec_sum_search_helper(
+                    rec_depth - 1,
+                    list_cut, key, 
+                    past_sum_new, 
+                    visual_new,
+                    margin
+            )
 
 
 
 def rec_sum_search(
-    list: list[float],         # list of possible addends
-    key: float,                # sum of some addends the program solves for
-    rec_depth: int|None = None # max number of addends the solution can be made of
-                               # default: length of list
+    list: list[float],          # list of possible addends
+    key: float,                 # sum of some addends the program solves for
+    rec_depth: int|None = None, # max number of addends the solution can be made of
+                                # default: length of list
+    margin: float = 0           # sums of key +/- margin are also solutions
 ):
     # remove all bigger than key
     new_list = list.copy()
@@ -47,7 +55,8 @@ def rec_sum_search(
                     list=list,
                     key=key, 
                     past_sum=0,
-                    visual=""
+                    visual="",
+                    margin=margin
             )
     else:
         rec_sum_search_helper(
@@ -55,7 +64,8 @@ def rec_sum_search(
                 list=list,
                 key=key, 
                 past_sum=0,
-                visual=""
+                visual="",
+                margin=margin
         )
         
 
