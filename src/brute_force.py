@@ -12,7 +12,7 @@ def rec_sum_search_helper(
         for i in list:
             test_sum = round(past_sum + i, 2)
             #print(f"{visual}{i} = {test_sum}")
-            if test_sum == key:
+            if test_sum >= (key - margin) and test_sum <= (key + margin):
                 print(f"FOUND SOLUTION: {visual}{i} = {test_sum}")
 
     # recursive case: spawns another search function for next addend
