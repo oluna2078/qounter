@@ -16,6 +16,7 @@ Opening the GUI you will see 4 main options:
 > You can see all solutions listed out in the console. The addends will be in the same order as they were in the input list.
 
 When exporting the .csv put the addends in the first column with either an empty cell or a cell with anything other than a number at the end:
+
 ![Table example to show what will be read][tut-tbl]
 
 ### How to use the CLI
@@ -28,6 +29,10 @@ When exporting the .csv put the addends in the first column with either an empty
                       elements from the input data
   -m, --margin float  +/- margin the sum can be off by (optional)
 ```
+
+
+
+
 
 ## Thought process
 
